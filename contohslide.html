@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Photo Otomatis</title>
+    <style>
+        .slider-container {
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #333;
+            border-radius: 10px;
+        }
+        
+        .slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out; /* Pindahkan transisi ke sini */
+        }
+        
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slider-nav {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .slider-nav button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .slider-nav button:hover {
+            background: #62afe3;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="aset/studen and teacher.png" alt="Gambar 1">
+            </div>
+            <div class="slide">
+                <img src="aset/bassketbal.png" alt="Gambar 2">
+            </div>
+            <div class="slide">
+                <img src="aset/class aktiviti.png" alt="Gambar 3">
+            </div>
+            <div class="slide">
+                <img src="aset/Morning Devotion.png" alt="Gambar 4">
+            </div>
+        </div>
+    </div>
+    
+    <div class="slider-nav">
+        <button id="prevBtn">Sebelumnya</button>
+        <button id="nextBtn">Selanjutnya</button>
+        <button id="autoBtn">Mulai Otomatis</button>
+        <button id="stopBtn">Berhenti</button>
+    </div>
+
+    <script>
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const autoBtn = document.getElementById('autoBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        
+        let currentIndex = 0;
+        let slideInterval;
+        
+        // Atur posisi awal slider
+        function init() {
+            updateSlider();
+        }
+        
+        // Update posisi slider
+        function updateSlider() {
+            const slideWidth = slides[0].clientWidth;
+            slider.style.transform = `translateX(${-slideWidth * currentIndex}px)`;
+        }
+        
+        // Geser ke slide berikutnya
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        }
+        
+        // Geser ke slide sebelumnya
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+        
+        // Mulai slide otomatis
+        function startAutoSlide() {
+            slideInterval = setInterval(nextSlide, 3000); // Ganti slide setiap 3 detik
+        }
+        
+        // Berhenti slide otomatis
+        function stopAutoSlide() {
+            clearInterval(slideInterval);
+        }
+        
+        // Event listeners
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoSlide();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoSlide();
+        });
+        
+        autoBtn.addEventListener('click', startAutoSlide);
+        stopBtn.addEventListener('click', stopAutoSlide);
+        
+        // Mulai otomatis saat halaman dimuat
+        window.addEventListener('load', () => {
+            init();
+            startAutoSlide();
+        });
+    </script>
+</body>
+</html>
